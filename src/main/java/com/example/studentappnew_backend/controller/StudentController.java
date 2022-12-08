@@ -1,24 +1,33 @@
 package com.example.studentappnew_backend.controller;
 
+import com.example.studentappnew_backend.dao.StudentDao;
 import com.example.studentappnew_backend.model.Students;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class StudentController {
 
+    @Autowired
+    private StudentDao dao;
+
     @GetMapping("/")
-    public String Homepage(){
-        return "Welcome to my website" ;
+    public String Homepage() {
+        return "Welcome to my website";
     }
 
-
-    @PostMapping(path = "/add", consumes = "application/json", produces = "application/json")
-    public String addstudentpage(@RequestBody Students s){
+    @CrossOrigin(origins = "*")
+    @PostMapping(path = "/addstudent", consumes = "application/json", produces = "application/json")
+    public String addstudentpage(@RequestBody Students s) {
         System.out.println(s.getName().toString());
-        return "Student added successfully" ;
+        return "Student added successfully";
     }
 
+    @CrossOrigin(origins = "*")
+    @GetMapping("/viewstudent")
+    public List<Students> viewstudents() {
+        return (List<Students>) dao.findAll();
+    }
 }
